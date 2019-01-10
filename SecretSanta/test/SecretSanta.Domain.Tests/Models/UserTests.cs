@@ -15,7 +15,8 @@ namespace SecretSanta.Domain.Tests.Models
             User user = new User
             {
                 FirstName = "Inigo",
-                LastName = "Montoya"
+                LastName = "Montoya",
+                Age = 32
             };
 
             Assert.AreEqual("Inigo", user.FirstName);
