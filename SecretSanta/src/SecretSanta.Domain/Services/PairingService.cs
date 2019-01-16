@@ -8,7 +8,7 @@ namespace SecretSanta.Domain.Services
 {
     public class PairingService
     {
-        private SecretSantaDbContext _context;
+        private SecretSantaDbContext _context { get; set; }
 
         public PairingService(SecretSantaDbContext context)
         {

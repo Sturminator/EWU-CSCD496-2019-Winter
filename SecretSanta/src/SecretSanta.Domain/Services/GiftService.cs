@@ -8,7 +8,7 @@ namespace SecretSanta.Domain.Services
 {
     public class GiftService
     {
-        private SecretSantaDbContext _context;
+        private SecretSantaDbContext _context { get; set; }
 
         public GiftService(SecretSantaDbContext context)
         {
