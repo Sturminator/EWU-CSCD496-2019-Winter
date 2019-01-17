@@ -60,7 +60,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var persistedUser = us.AddUser(myUser);
 
-                Assert.AreNotEqual(0, persistedUser.Id);
+                Assert.AreEqual("Inigo", persistedUser.FirstName);
             }
         }
 

@@ -24,7 +24,7 @@ namespace SecretSanta.Domain.Services
             return group;
         }
 
-        public void AddGroupMember(UserGroup ug, int groupId)
+        public UserGroup AddGroupMember(UserGroup ug, int groupId)
         {
             Group group = _context.Groups
                 .Include(g => g.UserGroups)
@@ -32,9 +32,11 @@ namespace SecretSanta.Domain.Services
 
             group.UserGroups.Add(ug); 
             _context.SaveChanges();
+
+            return ug;
         }
 
-        public void RemoveGroupMember(int userId, int groupId)
+        public UserGroup RemoveGroupMember(int userId, int groupId)
         {
             Group group = _context.Groups
                 .Include(g => g.UserGroups)
@@ -44,6 +46,15 @@ namespace SecretSanta.Domain.Services
 
             group.UserGroups.Remove(userGroup);
             _context.SaveChanges();
+
+            return userGroup;
+        }
+
+        public Group Find(int id)
+        {
+            return _context.Groups
+                .Include(g => g.UserGroups)
+                .SingleOrDefault(g => g.Id == id);
         }
     }
 }
