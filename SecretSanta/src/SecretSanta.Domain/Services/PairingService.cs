@@ -1,24 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecretSanta.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SecretSanta.Domain.Models;
 
 namespace SecretSanta.Domain.Services
 {
     public class PairingService
     {
-        private SecretSantaDbContext _context { get; set; }
+        private SecretSantaDbContext DbContext { get; set; }
 
         public PairingService(SecretSantaDbContext context)
         {
-            _context = context;
+            DbContext = context;
         }
 
         public Pairing AddPairing(Pairing pairing)
         {
-            _context.Pairings.Add(pairing);
-            _context.SaveChanges();
+            DbContext.Pairings.Add(pairing);
+            DbContext.SaveChanges();
 
             return pairing;
         }

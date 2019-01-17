@@ -1,48 +1,45 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SecretSanta.Domain.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SecretSanta.Domain.Services
 {
     public class GiftService
     {
-        private SecretSantaDbContext _context { get; set; }
+        private SecretSantaDbContext DbContext { get; set; }
 
         public GiftService(SecretSantaDbContext context)
         {
-            _context = context;
+            DbContext = context;
         }
 
         public Gift AddGift(Gift gift)
         {
-            _context.Gifts.Add(gift);
-            _context.SaveChanges();
+            DbContext.Gifts.Add(gift);
+            DbContext.SaveChanges();
 
             return gift;
         }
 
         public Gift UpdateGift(Gift gift)
         {
-            _context.Gifts.Update(gift);
-            _context.SaveChanges();
+            DbContext.Gifts.Update(gift);
+            DbContext.SaveChanges();
 
             return gift;
         }
 
         public Gift DeleteGift(Gift gift)
         {
-            _context.Gifts.Remove(gift);
-            _context.SaveChanges();
+            DbContext.Gifts.Remove(gift);
+            DbContext.SaveChanges();
 
             return gift;
         }
 
         public Gift Find(int id)
         {
-            return _context.Gifts
+            return DbContext.Gifts
                 .Include(g => g.User)
                 .SingleOrDefault(g => g.Id == id);
         }

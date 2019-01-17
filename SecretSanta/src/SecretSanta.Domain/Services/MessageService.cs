@@ -1,24 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecretSanta.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SecretSanta.Domain.Models;
 
 namespace SecretSanta.Domain.Services
 {
     public class MessageService
     {
-        private SecretSantaDbContext _context { get; set; }
+        private SecretSantaDbContext DbContext { get; set; }
 
         public MessageService(SecretSantaDbContext context)
         {
-            _context = context;
+            DbContext = context;
         }
 
         public Message StoreMessage(Message message)
         {
-            _context.Messages.Add(message);
-            _context.SaveChanges();
+            DbContext.Messages.Add(message);
+            DbContext.SaveChanges();
 
             return message;
         }

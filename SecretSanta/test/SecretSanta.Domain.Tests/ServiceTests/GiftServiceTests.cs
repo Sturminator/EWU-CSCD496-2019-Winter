@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Domain.Models;
 using SecretSanta.Domain.Services;
-using System.Collections.Generic;
 
 namespace SecretSanta.Domain.Tests.ServiceTests
 {

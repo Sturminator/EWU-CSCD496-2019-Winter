@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SecretSanta.Domain.Models
 {
@@ -8,7 +6,6 @@ namespace SecretSanta.Domain.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ICollection<Gift> Gifts { get; set; }
         public ICollection<UserGroup> UserGroups { get; set; }
     }
 }
