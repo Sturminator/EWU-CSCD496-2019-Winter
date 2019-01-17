@@ -2,6 +2,7 @@
 using SecretSanta.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SecretSanta.Domain.Services
@@ -15,21 +16,33 @@ namespace SecretSanta.Domain.Services
             _context = context;
         }
 
-        public void AddGroup(Group group)
+        public Group AddGroup(Group group)
         {
             _context.Groups.Add(group);
             _context.SaveChanges();
+
+            return group;
         }
 
-        public void AddGroupMember(Group group, User user)
+        public void AddGroupMember(UserGroup ug, int groupId)
         {
-            _context.Groups.Find(group).Users.Add(user);
+            Group group = _context.Groups
+                .Include(g => g.UserGroups)
+                .SingleOrDefault(g => g.Id == groupId);
+
+            group.UserGroups.Add(ug); 
             _context.SaveChanges();
         }
 
-        public void RemoveGroupMember(Group group, User user)
+        public void RemoveGroupMember(int userId, int groupId)
         {
-            _context.Groups.Find(group).Users.Remove(user);
+            Group group = _context.Groups
+                .Include(g => g.UserGroups)
+                .SingleOrDefault(g => g.Id == groupId);
+
+            UserGroup userGroup = group.UserGroups.SingleOrDefault(ug => ug.UserId == userId);
+
+            group.UserGroups.Remove(userGroup);
             _context.SaveChanges();
         }
     }

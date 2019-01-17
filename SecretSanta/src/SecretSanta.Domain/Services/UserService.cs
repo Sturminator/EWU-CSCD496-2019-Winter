@@ -2,6 +2,7 @@
 using SecretSanta.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SecretSanta.Domain.Services
@@ -23,15 +24,20 @@ namespace SecretSanta.Domain.Services
             return user;
         }
 
-        public void UpdateUser(User user)
+        public User UpdateUser(User user)
         {
             _context.Users.Update(user);
             _context.SaveChanges();
+
+            return user;
         }
 
         public User Find(int id)
         {
-            return _context.Users.Find(id);
+            return _context.Users
+                .Include(u => u.Gifts)
+                .Include(u => u.UserGroups)
+                .SingleOrDefault(u => u.Id == id);
         }
     }
 }
