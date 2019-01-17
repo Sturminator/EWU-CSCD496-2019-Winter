@@ -20,7 +20,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
             {
                 Title = "The Best Group",
                 UserGroups = new List<UserGroup>()
-        };
+            };
 
             return group;
         }
@@ -88,7 +88,6 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         [TestMethod]
         public void AddUserToGroup()
         {
-            // arrange
             using (var context = new SecretSantaDbContext(Options))
             {
                 GroupService gs = new GroupService(context);
@@ -102,7 +101,6 @@ namespace SecretSanta.Domain.Tests.ServiceTests
                 var persistedUser = us.AddUser(myUser);
             }
 
-            // act
             using (var context = new SecretSantaDbContext(Options))
             {
                 GroupService gs = new GroupService(context);
@@ -115,7 +113,6 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var fetchedUserGroup = gs.AddGroupMember(userGroup, fetchedUser.Id);
 
-                // assert
                 Assert.AreEqual("Inigo", fetchedUser.FirstName);
                 Assert.AreEqual("The Best Group", fetchedGroup.Title);
                 Assert.AreEqual(fetchedUser, fetchedUserGroup.User);
@@ -126,7 +123,6 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         [TestMethod]
         public void RemoveUserFromGroup()
         {
-            // arrange
             using (var context = new SecretSantaDbContext(Options))
             {
                 GroupService gs = new GroupService(context);
@@ -140,7 +136,6 @@ namespace SecretSanta.Domain.Tests.ServiceTests
                 var persistedUser = us.AddUser(myUser);
             }
 
-            // act
             using (var context = new SecretSantaDbContext(Options))
             {
                 GroupService gs = new GroupService(context);
@@ -155,7 +150,6 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var fetchedUserGroup = gs.RemoveGroupMember(fetchedUser.Id, fetchedGroup.Id);
 
-                // assert
                 Assert.AreEqual("Inigo", fetchedUser.FirstName);
                 Assert.AreEqual("The Best Group", fetchedGroup.Title);
                 Assert.IsNull(fetchedUserGroup.Group);

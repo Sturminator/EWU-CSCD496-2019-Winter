@@ -1,23 +1,19 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SecretSanta.Domain.Models;
 using SecretSanta.Domain.Services;
+using System.Collections.Generic;
 
 namespace SecretSanta.Domain.Tests.ServiceTests
 {
     [TestClass]
-    public class UserServiceTests
+    public class GiftServiceTests
     {
         private SqliteConnection SqliteConnection { get; set; }
         private DbContextOptions<SecretSantaDbContext> Options { get; set; }
 
-        public User CreateUser()
+        public Gift CreateGift()
         {
             User user = new User
             {
@@ -25,7 +21,16 @@ namespace SecretSanta.Domain.Tests.ServiceTests
                 LastName = "Montoya"
             };
 
-            return user;
+            Gift gift = new Gift
+            {
+                Title = "Test Gift",
+                OrderOfImportance = 1,
+                URL = "www.testURL.com",
+                Description = "This is a test gift",
+                User = user
+            };
+
+            return gift;
         }
 
         [TestInitialize]
@@ -51,65 +56,71 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         }
 
         [TestMethod]
-        public void AddUser()
+        public void AddGift()
         {
             using (var context = new SecretSantaDbContext(Options))
             {
-                UserService us = new UserService(context);
-                var myUser = CreateUser();
+                GiftService gs = new GiftService(context);
+                var gift = CreateGift();
 
-                var persistedUser = us.AddUser(myUser);
+                var persistedGift = gs.AddGift(gift);
 
-                Assert.AreEqual("Inigo", persistedUser.FirstName);
+                Assert.AreEqual("Test Gift", persistedGift.Title);
+                Assert.AreEqual("Inigo", persistedGift.User.FirstName);
             }
         }
 
         [TestMethod]
-        public void FindUser()
+        public void UpdateGift()
         {
+            
             using (var context = new SecretSantaDbContext(Options))
             {
-                UserService us = new UserService(context);
-                var myUser = CreateUser();
+                Gift gift = CreateGift();
+                var gs = new GiftService(context);
 
-                var persistedUser = us.AddUser(myUser);
+                gs.AddGift(gift);
             }
 
+            
             using (var context = new SecretSantaDbContext(Options))
             {
-                UserService us = new UserService(context);
-                var fetchedUser = us.Find(1);
+                var gs = new GiftService(context);
+                Gift gift = gs.Find(1);
+                gift.Title = "New & Improved Gift";
 
-                Assert.AreEqual("Inigo", fetchedUser.FirstName);
+                gs.UpdateGift(gift);
+            }
+
+            
+            using (var context = new SecretSantaDbContext(Options))
+            {
+                var gs = new GiftService(context);
+                Gift gift = gs.Find(1);
+
+                Assert.AreEqual("New & Improved Gift", gift.Title);
             }
         }
 
         [TestMethod]
-        public void UpdateUser()
+        public void DeleteGift()
         {
             using (var context = new SecretSantaDbContext(Options))
             {
-                User user = CreateUser();
-                var us = new UserService(context);
+                GiftService gs = new GiftService(context);
+                var gift = CreateGift();
 
-                us.AddUser(user);
+                var persistedGift = gs.AddGift(gift);
             }
 
             using (var context = new SecretSantaDbContext(Options))
             {
-                var us = new UserService(context);
-                User user = us.Find(1);
-                user.FirstName = "Chris";
+                var gs = new GiftService(context);
+                Gift gift = gs.Find(1);
 
-                us.UpdateUser(user);
-            }
+                Gift persistedGift = gs.DeleteGift(gift);
 
-            using (var context = new SecretSantaDbContext(Options))
-            {
-                var us = new UserService(context);
-                User user = us.Find(1);
-
-                Assert.AreEqual("Chris", user.FirstName);
+                Assert.AreEqual("Test Gift", persistedGift.Title);
             }
         }
     }
