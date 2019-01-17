@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecretSanta.Domain.Services
 {
-    class MessageService
+    public class MessageService
     {
         private SecretSantaDbContext _context { get; set; }
 
@@ -15,10 +15,12 @@ namespace SecretSanta.Domain.Services
             _context = context;
         }
 
-        public void StoreMessage(Message message)
+        public Message StoreMessage(Message message)
         {
             _context.Messages.Add(message);
             _context.SaveChanges();
+
+            return message;
         }
     }
 }

@@ -15,10 +15,12 @@ namespace SecretSanta.Domain.Services
             _context = context;
         }
 
-        public void AddPairing(Pairing pairing)
+        public Pairing AddPairing(Pairing pairing)
         {
             _context.Pairings.Add(pairing);
             _context.SaveChanges();
+
+            return pairing;
         }
     }
 }
