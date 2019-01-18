@@ -12,7 +12,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         private SqliteConnection SqliteConnection { get; set; }
         private DbContextOptions<SecretSantaDbContext> Options { get; set; }
 
-        public Gift CreateGift()
+        public Gift CreateGift(string title = "Test Gift")
         {
             User user = new User
             {
@@ -22,7 +22,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
             Gift gift = new Gift
             {
-                Title = "Test Gift",
+                Title = title,
                 OrderOfImportance = 1,
                 URL = "www.testURL.com",
                 Description = "This is a test gift",
@@ -64,8 +64,8 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var persistedGift = gs.AddGift(gift);
 
-                Assert.AreEqual("Test Gift", persistedGift.Title);
-                Assert.AreEqual("Inigo", persistedGift.User.FirstName);
+                Assert.AreEqual<string>("Test Gift", persistedGift.Title);
+                Assert.AreEqual<string>("Inigo", persistedGift.User.FirstName);
             }
         }
 
@@ -97,7 +97,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
                 var gs = new GiftService(context);
                 Gift gift = gs.Find(1);
 
-                Assert.AreEqual("New & Improved Gift", gift.Title);
+                Assert.AreEqual<string>("New & Improved Gift", gift.Title);
             }
         }
 
@@ -119,7 +119,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 Gift persistedGift = gs.DeleteGift(gift);
 
-                Assert.AreEqual("Test Gift", persistedGift.Title);
+                Assert.AreEqual<string>("Test Gift", persistedGift.Title);
             }
         }
     }

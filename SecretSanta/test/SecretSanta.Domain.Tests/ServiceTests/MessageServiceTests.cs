@@ -12,25 +12,26 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         private SqliteConnection SqliteConnection { get; set; }
         private DbContextOptions<SecretSantaDbContext> Options { get; set; }
 
-        public Message CreateMessage()
+        public Message CreateMessage(string firstNameToUser = "Luke", string lastNameToUser = "Skywalker", string firstNameFromUser = "Han",
+            string lastNameFromUser = "Solo", string messageText = "Thanks for the blaster, Luke!")
         {
-            User user = new User
+            User toUser = new User
             {
-                FirstName = "Luke",
-                LastName = "Skywalker"
+                FirstName = firstNameToUser,
+                LastName = lastNameToUser
             };
 
-            User user2 = new User
+            User fromUser = new User
             {
-                FirstName = "Han",
-                LastName = "Solo"
+                FirstName = firstNameFromUser,
+                LastName = lastNameFromUser
             };
 
             Message message = new Message
             {
-                ToUser = user,
-                FromUser = user2,
-                MessageText = "Thanks for the blaster, Luke!"
+                ToUser = toUser,
+                FromUser = fromUser,
+                MessageText = messageText
             };
 
             return message;
@@ -68,9 +69,9 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var persistedMessage = ms.StoreMessage(message);
 
-                Assert.AreEqual("Luke", persistedMessage.ToUser.FirstName);
-                Assert.AreEqual("Han", persistedMessage.FromUser.FirstName);
-                Assert.AreEqual("Thanks for the blaster, Luke!", persistedMessage.MessageText);
+                Assert.AreEqual<string>("Luke", persistedMessage.ToUser.FirstName);
+                Assert.AreEqual<string>("Han", persistedMessage.FromUser.FirstName);
+                Assert.AreEqual<string>("Thanks for the blaster, Luke!", persistedMessage.MessageText);
             }
         }
     }

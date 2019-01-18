@@ -13,24 +13,24 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         private SqliteConnection SqliteConnection { get; set; }
         private DbContextOptions<SecretSantaDbContext> Options { get; set; }
 
-        public Group CreateGroup()
+        public Group CreateGroup(string title = "The Best Group")
         {
 
             Group group = new Group
             {
-                Title = "The Best Group",
+                Title = title,
                 UserGroups = new List<UserGroup>()
             };
 
             return group;
         }
 
-        public User CreateUser()
+        public User CreateUser(string firstName = "Inigo", string lastName = "Montoya")
         {
             User user = new User
             {
-                FirstName = "Inigo",
-                LastName = "Montoya"
+                FirstName = firstName,
+                LastName = lastName
             };
 
             return user;
@@ -81,7 +81,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var persistedGroup = gs.AddGroup(group);
 
-                Assert.AreEqual("The Best Group", persistedGroup.Title);
+                Assert.AreEqual<string>("The Best Group", persistedGroup.Title);
             }
         }
 
@@ -113,10 +113,10 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var fetchedUserGroup = gs.AddGroupMember(userGroup, fetchedUser.Id);
 
-                Assert.AreEqual("Inigo", fetchedUser.FirstName);
-                Assert.AreEqual("The Best Group", fetchedGroup.Title);
-                Assert.AreEqual(fetchedUser, fetchedUserGroup.User);
-                Assert.AreEqual(fetchedGroup, fetchedUserGroup.Group);
+                Assert.AreEqual<string>("Inigo", fetchedUser.FirstName);
+                Assert.AreEqual<string>("The Best Group", fetchedGroup.Title);
+                Assert.AreEqual<User>(fetchedUser, fetchedUserGroup.User);
+                Assert.AreEqual<Group>(fetchedGroup, fetchedUserGroup.Group);
             }
         }
 
@@ -150,11 +150,11 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var fetchedUserGroup = gs.RemoveGroupMember(fetchedUser.Id, fetchedGroup.Id);
 
-                Assert.AreEqual("Inigo", fetchedUser.FirstName);
-                Assert.AreEqual("The Best Group", fetchedGroup.Title);
+                Assert.AreEqual<string>("Inigo", fetchedUser.FirstName);
+                Assert.AreEqual<string>("The Best Group", fetchedGroup.Title);
                 Assert.IsNull(fetchedUserGroup.Group);
-                Assert.AreEqual(0, fetchedGroup.UserGroups.Count);
-                Assert.AreEqual(0, fetchedUser.UserGroups.Count);
+                Assert.AreEqual<int>(0, fetchedGroup.UserGroups.Count);
+                Assert.AreEqual<int>(0, fetchedUser.UserGroups.Count);
             }
         }
     }

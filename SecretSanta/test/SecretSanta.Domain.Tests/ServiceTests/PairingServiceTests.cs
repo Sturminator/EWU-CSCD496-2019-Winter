@@ -12,24 +12,25 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         private SqliteConnection SqliteConnection { get; set; }
         private DbContextOptions<SecretSantaDbContext> Options { get; set; }
 
-        public Pairing CreatePairing()
+        public Pairing CreatePairing(string firstNameSanta = "Luke", string lastNameSanta = "Skywalker", string firstNameRecipient = "Han",
+            string lastNameRecipient = "Solo")
         {
-            User user = new User
+            User santa = new User
             {
-                FirstName = "Luke",
-                LastName = "Skywalker"
+                FirstName = firstNameSanta,
+                LastName = lastNameSanta
             };
 
-            User user2 = new User
+            User recipient = new User
             {
-                FirstName = "Han",
-                LastName = "Solo"
+                FirstName = firstNameRecipient,
+                LastName = lastNameRecipient
             };
 
             Pairing pairing = new Pairing
             {
-                Santa =  user,
-                Recipient = user2
+                Santa = santa,
+                Recipient = recipient
             };
 
             return pairing;
@@ -67,8 +68,8 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var persistedPairing = ps.AddPairing(pairing);
 
-                Assert.AreEqual("Luke", persistedPairing.Santa.FirstName);
-                Assert.AreEqual("Han", persistedPairing.Recipient.FirstName);
+                Assert.AreEqual<string>("Luke", persistedPairing.Santa.FirstName);
+                Assert.AreEqual<string>("Han", persistedPairing.Recipient.FirstName);
             }
         }
     }

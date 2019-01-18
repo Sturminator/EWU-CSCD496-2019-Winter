@@ -12,12 +12,12 @@ namespace SecretSanta.Domain.Tests.ServiceTests
         private SqliteConnection SqliteConnection { get; set; }
         private DbContextOptions<SecretSantaDbContext> Options { get; set; }
 
-        public User CreateUser()
+        public User CreateUser(string firstName = "Inigo", string lastName = "Montoya")
         {
             User user = new User
             {
-                FirstName = "Inigo",
-                LastName = "Montoya"
+                FirstName = firstName,
+                LastName = lastName
             };
 
             return user;
@@ -55,7 +55,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
 
                 var persistedUser = us.AddUser(myUser);
 
-                Assert.AreEqual("Inigo", persistedUser.FirstName);
+                Assert.AreEqual<string>("Inigo", persistedUser.FirstName);
             }
         }
 
@@ -75,7 +75,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
                 UserService us = new UserService(context);
                 var fetchedUser = us.Find(1);
 
-                Assert.AreEqual("Inigo", fetchedUser.FirstName);
+                Assert.AreEqual<string>("Inigo", fetchedUser.FirstName);
             }
         }
 
@@ -104,7 +104,7 @@ namespace SecretSanta.Domain.Tests.ServiceTests
                 var us = new UserService(context);
                 User user = us.Find(1);
 
-                Assert.AreEqual("Chris", user.FirstName);
+                Assert.AreEqual<string>("Chris", user.FirstName);
             }
         }
     }
