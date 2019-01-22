@@ -5,11 +5,13 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B85C82CA-FCAF-4E70-9128-8A626E4AD6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecretSanta.Domain", "src\SecretSanta.Domain\SecretSanta.Domain.csproj", "{D355B547-9F7A-421D-B1CC-841581E30929}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecretSanta.Domain", "src\SecretSanta.Domain\SecretSanta.Domain.csproj", "{D355B547-9F7A-421D-B1CC-841581E30929}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BD203485-270A-4CD5-B199-94061EBF209C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecretSanta.Domain.Tests", "test\SecretSanta.Domain.Tests\SecretSanta.Domain.Tests.csproj", "{A2AFC2B5-202D-4EFF-B399-13F76B43C4D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecretSanta.Domain.Tests", "test\SecretSanta.Domain.Tests\SecretSanta.Domain.Tests.csproj", "{A2AFC2B5-202D-4EFF-B399-13F76B43C4D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecretSanta.Import", "SecretSanta.Import\SecretSanta.Import.csproj", "{297D333A-AA39-46D6-AA38-219AAEE8AAE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,9 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D355B547-9F7A-421D-B1CC-841581E30929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -48,9 +47,28 @@ Global
 		{A2AFC2B5-202D-4EFF-B399-13F76B43C4D3}.Release|x64.Build.0 = Release|Any CPU
 		{A2AFC2B5-202D-4EFF-B399-13F76B43C4D3}.Release|x86.ActiveCfg = Release|Any CPU
 		{A2AFC2B5-202D-4EFF-B399-13F76B43C4D3}.Release|x86.Build.0 = Release|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Debug|x64.Build.0 = Debug|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Debug|x86.Build.0 = Debug|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Release|x64.ActiveCfg = Release|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Release|x64.Build.0 = Release|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Release|x86.ActiveCfg = Release|Any CPU
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D355B547-9F7A-421D-B1CC-841581E30929} = {B85C82CA-FCAF-4E70-9128-8A626E4AD6C1}
 		{A2AFC2B5-202D-4EFF-B399-13F76B43C4D3} = {BD203485-270A-4CD5-B199-94061EBF209C}
+		{297D333A-AA39-46D6-AA38-219AAEE8AAE6} = {B85C82CA-FCAF-4E70-9128-8A626E4AD6C1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C6648A2-8129-46F5-8274-77A936900449}
 	EndGlobalSection
 EndGlobal
