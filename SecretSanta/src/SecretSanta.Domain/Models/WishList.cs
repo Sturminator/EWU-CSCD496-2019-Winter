@@ -7,6 +7,6 @@ namespace SecretSanta.Domain.Models
     public class Wishlist : Entity
     {
         public User User { get; set; }
-        public ICollection<Gift> Gifts { get; set; }
+        public List<Gift> Gifts { get; set; }
     }
 }
