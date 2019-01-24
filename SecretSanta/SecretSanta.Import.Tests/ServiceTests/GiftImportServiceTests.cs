@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Domain.Models;
 using SecretSanta.Import.Services;
+using System;
 using System.IO;
 
 namespace SecretSanta.Import.Tests.ServiceTests
@@ -17,7 +18,7 @@ namespace SecretSanta.Import.Tests.ServiceTests
 
         private void InitializeTestFile1()
         {
-            string filepath = System.Environment.CurrentDirectory + @"\TestFile_NoCommaName.txt";
+            string filepath = System.IO.Path.GetTempPath() + @"\TestFile_NoCommaName.txt";
 
             if (!File.Exists(filepath))
             {
@@ -33,7 +34,7 @@ namespace SecretSanta.Import.Tests.ServiceTests
 
         private void InitializeTestFile2()
         {
-            string filepath = System.Environment.CurrentDirectory + @"\TestFile_CommaName.txt";
+            string filepath = System.IO.Path.GetTempPath() + @"\TestFile_CommaName.txt";
 
             if (!File.Exists(filepath))
             {
@@ -50,7 +51,7 @@ namespace SecretSanta.Import.Tests.ServiceTests
         [TestCleanup]
         public void CleanupTests()
         {
-            string cwd = System.Environment.CurrentDirectory;
+            string cwd = System.IO.Path.GetTempPath();
             File.Delete(cwd + @"\TestFile_NoCommaName.txt");
             File.Delete(cwd + @"\TestFile_CommaName.txt");
         }
@@ -72,6 +73,33 @@ namespace SecretSanta.Import.Tests.ServiceTests
             Assert.AreEqual(line2, wl.Gifts[1].Title);
             Assert.AreEqual(line3, wl.Gifts[2].Title);
             Assert.AreEqual(count, wl.Gifts.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FileNotFoundException), "Filename cannot be null or empty.")]
+        public void FileDoesNotExistTest()
+        {
+            string filename = "TestFile_DoesNotExist.txt";
+
+            Wishlist wl = GiftImportService.ReadWishlist(filename);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException), "Filename cannot be null or empty.")]
+        public void FileIsEmpty()
+        {
+            string filename = "";
+
+            Wishlist wl = GiftImportService.ReadWishlist(filename);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException), "Filename cannot be null or empty.")]
+        public void FileIsNull()
+        {
+            string filename = null;
+
+            Wishlist wl = GiftImportService.ReadWishlist(filename);
         }
 
         [TestMethod]

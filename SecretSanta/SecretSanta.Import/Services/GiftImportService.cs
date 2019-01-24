@@ -13,7 +13,7 @@ namespace SecretSanta.Import.Services
             if (string.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("Filename cannot be null or empty.");
 
-            string path = Path.Combine(System.Environment.CurrentDirectory + @"\", filename);
+            string path = Path.Combine(System.IO.Path.GetTempPath() + @"\", filename);
 
             if(!File.Exists(path))
             {
