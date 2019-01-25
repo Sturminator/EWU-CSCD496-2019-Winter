@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Text;
 using SecretSanta.Domain.Models;
 
 namespace SecretSanta.Import.Services
@@ -15,10 +14,15 @@ namespace SecretSanta.Import.Services
 
             string path = Path.Combine(System.IO.Path.GetTempPath() + @"\", filename);
 
-            if(!File.Exists(path))
+            if (!File.Exists(filename))
             {
-                throw new FileNotFoundException("Could not find file " + filename + " at relative path.");
+                if (!File.Exists(path))
+                {
+                    throw new FileNotFoundException("Could not find file " + filename + " at path.");
+                }
             }
+            else
+                path = filename;
 
             List<Gift> gifts = new List<Gift>();
             User user = new User();
@@ -58,19 +62,21 @@ namespace SecretSanta.Import.Services
 
         public static User GetUserFromHeader(string header)
         {
-            if(!header.StartsWith("Name: ") || string.IsNullOrEmpty(header))
-            {
+            if (string.IsNullOrEmpty(header))
                 return null;
-            }
+            if (!header.StartsWith("Name: "))
+                return null;
 
             string[] name;
 
             string[] headerSplit = header.Trim().Split(':');
 
+            string nameTrimmed = headerSplit[1].Trim();
+
             if (header.Contains(","))
-                name = headerSplit[1].Trim().Split(',');
+                name = nameTrimmed.Split(',');
             else
-                name = headerSplit[1].Trim().Split(' ');
+                name = nameTrimmed.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
             if (name.Length != 2)
                 return null;
