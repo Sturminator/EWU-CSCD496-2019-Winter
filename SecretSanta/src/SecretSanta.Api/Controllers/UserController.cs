@@ -40,6 +40,17 @@ namespace SecretSanta.Api.Controllers
             return new DTO.User(returnedUser);
         }
 
+        [HttpDelete]
+        public ActionResult<DTO.User> DeleteUser(DTO.User user)
+        {
+            if (user == null)
+                return BadRequest();
+
+            var returnedUser = _UserService.RemoveUser(DTO.User.ToDomainEntity(user));
+
+            return new DTO.User(returnedUser);
+        }
+
         [HttpGet]
         public ActionResult<List<DTO.User>> GetAllUsers()
         {

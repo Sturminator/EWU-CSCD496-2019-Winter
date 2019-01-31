@@ -40,6 +40,17 @@ namespace SecretSanta.Api.Controllers
             return new DTO.Group(returnedGroup);
         }
 
+        [HttpDelete]
+        public ActionResult<DTO.Group> DeleteGroup(DTO.Group group)
+        {
+            if (group == null)
+                return BadRequest();
+
+            var returnedGroup = _GroupService.RemoveGroup(DTO.Group.ToDomainEntity(group));
+
+            return new DTO.Group(returnedGroup);
+        }
+
         [HttpGet]
         public ActionResult<List<DTO.Group>> GetAllGroups()
         {
@@ -47,5 +58,45 @@ namespace SecretSanta.Api.Controllers
 
             return databaseGroups.Select(x => new DTO.Group(x)).ToList();
         }
+
+        [HttpGet("{groupId}")]
+        public ActionResult<List<DTO.User>> GetAllUsersInGroup(int groupId)
+        {
+            if (groupId <= 0)
+                return NotFound();
+
+            List<User> databaseGroupUsers = _GroupService.FetchAllUsersInGroup(groupId);
+
+            return databaseGroupUsers.Select(x => new DTO.User(x)).ToList();
+        }
+
+        [HttpPost("{groupId}")]
+        public ActionResult<DTO.User> AddUserToGroup(int groupId, User user)
+        {
+            if (groupId <= 0)
+                return NotFound();
+
+            if (user == null)
+                return BadRequest();
+
+            var returnedUser = _GroupService.AddUserToGroup(groupId, user);
+
+            return new DTO.User(returnedUser);
+        }
+
+        [HttpDelete("{groupId}")]
+        public ActionResult<DTO.User> DeleteUserFromGroup(int groupId, User user)
+        {
+            if (groupId <= 0)
+                return NotFound();
+
+            if (user == null)
+                return BadRequest();
+
+            var returnedUser = _GroupService.RemoveUserFromGroup(groupId, user);
+
+            return new DTO.User(returnedUser);
+        }
+
     }
 }

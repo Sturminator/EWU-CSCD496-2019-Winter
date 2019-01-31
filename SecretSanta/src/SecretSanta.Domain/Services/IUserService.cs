@@ -11,6 +11,8 @@ namespace SecretSanta.Domain.Services
 
         User UpdateUser(User user);
 
+        User RemoveUser(User user);
+
         List<User> FetchAll();
     }
 }
