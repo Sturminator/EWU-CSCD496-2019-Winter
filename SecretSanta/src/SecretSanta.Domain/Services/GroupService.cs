@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SecretSanta.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -41,13 +42,47 @@ namespace SecretSanta.Domain.Services
             return DbContext.Groups.ToList();
         }
 
-        public List<User> GetUsers(int groupId)
+        public List<User> FetchAllUsersInGroup(int groupId)
         {
             return DbContext.Groups
                 .Where(x => x.Id == groupId)
                 .SelectMany(x => x.GroupUsers)
                 .Select(x => x.User)
                 .ToList();
+        }
+
+        public User AddUserToGroup(int groupId, User user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            Group group = DbContext.Groups.Include(g => g.GroupUsers).SingleOrDefault(g => g.Id == groupId);
+
+            group?.GroupUsers.Add(new GroupUser
+            {
+                GroupId = groupId,
+                Group = group,
+                UserId = user.Id,
+                User = user
+            });
+
+            DbContext.SaveChanges();
+
+            return user;
+        }
+
+        public User RemoveUserFromGroup(int groupId, User user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            Group group = DbContext.Groups.Include(g => g.GroupUsers).SingleOrDefault(g => g.Id == groupId);
+
+            GroupUser groupUser = group.GroupUsers.SingleOrDefault(gu => gu.UserId == user.Id);
+
+            group?.GroupUsers.Remove(groupUser);
+
+            DbContext.SaveChanges();
+
+            return user;
         }
     }
 }
