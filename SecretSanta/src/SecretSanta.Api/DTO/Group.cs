@@ -12,12 +12,21 @@ namespace SecretSanta.Api.DTO
 
         }
 
-        public Group(SecretSanta.Domain.Models.Group group)
+        public Group(Domain.Models.Group group)
         {
             if (group == null) throw new ArgumentNullException(nameof(group));
 
             Id = group.Id;
             Name = group.Name;
+        }
+
+        public static Domain.Models.Group ToDomainEntity(DTO.Group group)
+        {
+            return new Domain.Models.Group
+            {
+                Id = group.Id,
+                Name = group.Name
+            };
         }
     }
 }
