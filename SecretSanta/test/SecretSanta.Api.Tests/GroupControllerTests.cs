@@ -218,6 +218,25 @@ namespace SecretSanta.Api.Tests
         }
 
         [TestMethod]
+        public void AddUserToGroup_UserNotFound()
+        {
+            var testService = new TestableGroupService();
+            var controller = new GroupController(testService);
+
+            var user = new User
+            {
+                Id = 3,
+                FirstName = "John",
+                LastName = "Doe"
+
+            };
+
+            ActionResult<DTO.User> result = controller.AddUserToGroup(3, new DTO.User(user));
+
+            Assert.IsTrue(result.Result is NotFoundResult);
+        }
+
+        [TestMethod]
         public void AddUserToGroup_RequiresPositiveGroupId()
         {
             var testService = new TestableGroupService();
@@ -279,7 +298,26 @@ namespace SecretSanta.Api.Tests
         }
 
         [TestMethod]
-        public void RemoveUserFromGroupAddUserToGroup_RequiresPositiveGroupId()
+        public void RemoveUserFromGroup_UserNotFound()
+        {
+            var testService = new TestableGroupService();
+            var controller = new GroupController(testService);
+
+            var user = new User
+            {
+                Id = 3,
+                FirstName = "John",
+                LastName = "Doe"
+
+            };
+
+            ActionResult<DTO.User> result = controller.DeleteUserFromGroup(3, new DTO.User(user));
+
+            Assert.IsTrue(result.Result is NotFoundResult);
+        }
+
+        [TestMethod]
+        public void RemoveUserFromGroup_RequiresPositiveGroupId()
         {
             var testService = new TestableGroupService();
             var controller = new GroupController(testService);

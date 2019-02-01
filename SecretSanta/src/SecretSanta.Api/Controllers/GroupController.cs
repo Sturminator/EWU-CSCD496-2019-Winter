@@ -81,6 +81,9 @@ namespace SecretSanta.Api.Controllers
 
             var returnedUser = _GroupService.AddUserToGroup(groupId, DTO.User.ToDomainEntity(user));
 
+            if (returnedUser == null)
+                return NotFound();
+
             return new DTO.User(returnedUser);
         }
 
@@ -94,6 +97,9 @@ namespace SecretSanta.Api.Controllers
                 return BadRequest();
 
             var returnedUser = _GroupService.RemoveUserFromGroup(groupId, DTO.User.ToDomainEntity(user));
+
+            if (returnedUser == null)
+                return NotFound();
 
             return new DTO.User(returnedUser);
         }
