@@ -59,14 +59,14 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpDelete]
-        public ActionResult DeleteGift(DTO.Gift gift)
+        public ActionResult<DTO.Gift> DeleteGift(DTO.Gift gift)
         {
             if (gift == null)
                 return BadRequest();
 
-            _GiftService.RemoveGift(DTO.Gift.ToDomainEntity(gift));
+            var returnedGift = _GiftService.RemoveGift(DTO.Gift.ToDomainEntity(gift));
 
-            return Ok();
+            return new DTO.Gift(returnedGift);
         }
     }
 }

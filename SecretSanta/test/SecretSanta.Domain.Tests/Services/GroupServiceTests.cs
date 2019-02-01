@@ -87,7 +87,7 @@ namespace SecretSanta.Domain.Tests.Services
             using (var context = new ApplicationDbContext(Options))
             {
                 var service = new GroupService(context);
-                List<User> users = service.GetUsers(43);
+                List<User> users = service.FetchAllUsersInGroup(43);
                 Assert.AreEqual(42, users.Single().Id);
             }
         }
@@ -98,7 +98,7 @@ namespace SecretSanta.Domain.Tests.Services
             using (var context = new ApplicationDbContext(Options))
             {
                 var service = new GroupService(context);
-                List<User> users = service.GetUsers(4);
+                List<User> users = service.FetchAllUsersInGroup(4);
                 Assert.AreEqual(0, users.Count);
             }
         }

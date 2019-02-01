@@ -11,6 +11,6 @@ namespace SecretSanta.Domain.Services
 
         List<Gift> GetGiftsForUser(int userId);
 
-        void RemoveGift(Gift gift);
+        Gift RemoveGift(Gift gift);
     }
 }

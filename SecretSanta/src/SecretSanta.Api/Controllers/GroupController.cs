@@ -71,7 +71,7 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPost("{groupId}")]
-        public ActionResult<DTO.User> AddUserToGroup(int groupId, User user)
+        public ActionResult<DTO.User> AddUserToGroup(int groupId, DTO.User user)
         {
             if (groupId <= 0)
                 return NotFound();
@@ -79,13 +79,13 @@ namespace SecretSanta.Api.Controllers
             if (user == null)
                 return BadRequest();
 
-            var returnedUser = _GroupService.AddUserToGroup(groupId, user);
+            var returnedUser = _GroupService.AddUserToGroup(groupId, DTO.User.ToDomainEntity(user));
 
             return new DTO.User(returnedUser);
         }
 
         [HttpDelete("{groupId}")]
-        public ActionResult<DTO.User> DeleteUserFromGroup(int groupId, User user)
+        public ActionResult<DTO.User> DeleteUserFromGroup(int groupId, DTO.User user)
         {
             if (groupId <= 0)
                 return NotFound();
@@ -93,7 +93,7 @@ namespace SecretSanta.Api.Controllers
             if (user == null)
                 return BadRequest();
 
-            var returnedUser = _GroupService.RemoveUserFromGroup(groupId, user);
+            var returnedUser = _GroupService.RemoveUserFromGroup(groupId, DTO.User.ToDomainEntity(user));
 
             return new DTO.User(returnedUser);
         }
