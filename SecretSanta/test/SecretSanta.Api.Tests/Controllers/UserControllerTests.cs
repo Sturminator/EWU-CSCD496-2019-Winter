@@ -4,12 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SecretSanta.Api.Controllers;
 using SecretSanta.Api.ViewModels;
-using SecretSanta.Domain.Models;
 using SecretSanta.Domain.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -45,6 +40,34 @@ namespace SecretSanta.Api.Tests.Controllers
             Assert.AreEqual("John", resultValue.FirstName);
             Assert.AreEqual("Doe", resultValue.LastName);
             service.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CreateUser_RequiresFirstName()
+        {
+            var user = new UserInputViewModel
+            {
+                FirstName = null,
+                LastName = "Doe"
+            };
+
+            var service = new Mock<IUserService>();
+            service.Setup(x => x.AddUser(It.Is<Domain.Models.User>(u => u.FirstName != null)))
+                .Returns(new Domain.Models.User
+                {
+                    Id = 2,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                })
+                .Verifiable();
+
+            var controller = new UserController(service.Object, Mapper.Instance);
+
+            var result = controller.Post(user);
+
+            var resultValue = (UserViewModel)((OkObjectResult)result).Value;
+
+            Assert.IsNull(resultValue);
         }
     }
 }
