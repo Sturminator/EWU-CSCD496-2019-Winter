@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SecretSanta.Api.Controllers;
@@ -19,7 +20,7 @@ namespace SecretSanta.Api.Tests.Controllers
         [ExpectedException(typeof(ArgumentNullException))]
         public void GroupController_RequiresGiftService()
         {
-            new GroupController(null);
+            new GroupController(null, Mapper.Instance);
         }
 
         [TestMethod]
@@ -42,11 +43,11 @@ namespace SecretSanta.Api.Tests.Controllers
                 .Verifiable();
 
 
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult<IEnumerable<GroupViewModel>> result = controller.GetAllGroups();
+            var result = controller.GetAllGroups();
 
-            List<GroupViewModel> groups = result.Value.ToList();
+            var groups = ((IEnumerable<GroupViewModel>)((OkObjectResult)result).Value).ToList();
 
             Assert.AreEqual(2, groups.Count);
             AssertAreEqual(groups[0], group1);
@@ -58,12 +59,12 @@ namespace SecretSanta.Api.Tests.Controllers
         public void CreateGroup_RequiresGroup()
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
 
-            ActionResult<GroupViewModel> result = controller.CreateGroup(null);
+            var result = controller.CreateGroup(null) as BadRequestResult;
 
-            Assert.IsTrue(result.Result is BadRequestResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -82,12 +83,14 @@ namespace SecretSanta.Api.Tests.Controllers
                 })
                 .Verifiable();
 
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult<GroupViewModel> result = controller.CreateGroup(group);
+            var result = controller.CreateGroup(group);
 
-            Assert.AreEqual(2, result.Value.Id);
-            Assert.AreEqual("Group", result.Value.Name);
+            var resultValue = (GroupViewModel)((CreatedResult)result).Value;
+
+            Assert.AreEqual(2, resultValue.Id);
+            Assert.AreEqual("Group", resultValue.Name);
             service.VerifyAll();
         }
 
@@ -95,12 +98,12 @@ namespace SecretSanta.Api.Tests.Controllers
         public void UpdateGroup_RequiresGroup()
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
 
-            ActionResult<GroupViewModel> result = controller.UpdateGroup(-1, null);
+            var result = controller.UpdateGroup(-1, null) as BadRequestResult;
 
-            Assert.IsTrue(result.Result is BadRequestResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -121,12 +124,14 @@ namespace SecretSanta.Api.Tests.Controllers
                 })
                 .Verifiable();
 
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult<GroupViewModel> result = controller.UpdateGroup(2, group);
+            var result = controller.UpdateGroup(2, group);
 
-            Assert.AreEqual(2, result.Value.Id);
-            Assert.AreEqual("Group", result.Value.Name);
+            var resultValue = (GroupViewModel)((OkObjectResult)result).Value;
+
+            Assert.AreEqual(2, resultValue.Id);
+            Assert.AreEqual("Group", resultValue.Name);
             service.VerifyAll();
         }
 
@@ -136,11 +141,11 @@ namespace SecretSanta.Api.Tests.Controllers
         public void DeleteGroup_RequiresPositiveId(int groupId)
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.DeleteGroup(groupId);
+            var result = controller.DeleteGroup(groupId) as BadRequestObjectResult;
 
-            Assert.IsTrue(result is BadRequestObjectResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -150,11 +155,11 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Setup(x => x.DeleteGroup(2))
                 .Returns(false)
                 .Verifiable();
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.DeleteGroup(2);
+            var result = controller.DeleteGroup(2) as NotFoundResult;
 
-            Assert.IsTrue(result is NotFoundResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -164,11 +169,11 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Setup(x => x.DeleteGroup(2))
                 .Returns(true)
                 .Verifiable();
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.DeleteGroup(2);
+            var result = controller.DeleteGroup(2) as OkResult;
 
-            Assert.IsTrue(result is OkResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -177,11 +182,11 @@ namespace SecretSanta.Api.Tests.Controllers
         public void AddUserToGroup_RequiresPositiveGroupId(int groupId)
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.AddUserToGroup(groupId, 1);
+            var result = controller.AddUserToGroup(groupId, 1) as BadRequestResult;
 
-            Assert.IsTrue(result is BadRequestResult);
+            Assert.IsNotNull(result);
         }
 
 
@@ -191,11 +196,11 @@ namespace SecretSanta.Api.Tests.Controllers
         public void AddUserToGroup_RequiresPositiveUserId(int userId)
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.AddUserToGroup(1, userId);
+            var result = controller.AddUserToGroup(1, userId) as BadRequestResult;
 
-            Assert.IsTrue(result is BadRequestResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -205,11 +210,11 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Setup(x => x.AddUserToGroup(2, 3))
                 .Returns(false)
                 .Verifiable();
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.AddUserToGroup(2, 3);
+            var result = controller.AddUserToGroup(2, 3) as NotFoundResult;
 
-            Assert.IsTrue(result is NotFoundResult);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -219,11 +224,11 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Setup(x => x.AddUserToGroup(2, 3))
                 .Returns(true)
                 .Verifiable();
-            var controller = new GroupController(service.Object);
+            var controller = new GroupController(service.Object, Mapper.Instance);
 
-            ActionResult result = controller.AddUserToGroup(2, 3);
+            var result = controller.AddUserToGroup(2, 3) as OkResult;
 
-            Assert.IsTrue(result is OkResult);
+            Assert.IsNotNull(result);
         }
 
         private static void AssertAreEqual(GroupViewModel expected, Group actual)

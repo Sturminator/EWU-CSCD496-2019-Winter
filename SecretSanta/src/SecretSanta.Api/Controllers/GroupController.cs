@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Api.ViewModels;
 using SecretSanta.Domain.Models;
@@ -46,6 +45,10 @@ namespace SecretSanta.Api.Controllers
 
         // PUT api/group/5
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult UpdateGroup(int id, GroupInputViewModel viewModel)
         {
             if (viewModel == null)
@@ -64,6 +67,10 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{groupId}/{userid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult AddUserToGroup(int groupId, int userId)
         {
             if (groupId <= 0)

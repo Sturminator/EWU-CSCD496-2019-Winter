@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Api.ViewModels;
 using SecretSanta.Domain.Models;
@@ -24,6 +25,9 @@ namespace SecretSanta.Api.Controllers
 
         // POST api/<controller>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public IActionResult Post(UserInputViewModel userViewModel)
         {
             if (userViewModel == null)
@@ -38,6 +42,10 @@ namespace SecretSanta.Api.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult Put(int id, UserInputViewModel userViewModel)
         {
             if (userViewModel == null)

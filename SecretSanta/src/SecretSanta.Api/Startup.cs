@@ -35,7 +35,7 @@ namespace SecretSanta.Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
 
-            var connection = new SqliteConnection(Configuration.GetConnectionString("SecretSantaConnection"));
+            var connection = new SqliteConnection(Configuration.GetConnectionString("DefaultConnection"));
             connection.Open();
             services.AddDbContext<ApplicationDbContext>(builder =>
             {
