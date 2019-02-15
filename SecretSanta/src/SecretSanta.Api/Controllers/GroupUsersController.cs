@@ -20,7 +20,7 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{groupId}")]
-        public IActionResult AddUserToGroup(int groupId, int userId)
+        public async Task<IActionResult> AddUserToGroup(int groupId, int userId)
         {
             if (groupId <= 0)
             {
@@ -32,7 +32,7 @@ namespace SecretSanta.Api.Controllers
                 return BadRequest();
             }
 
-            if (GroupService.AddUserToGroup(groupId, userId))
+            if (await GroupService.AddUserToGroup(groupId, userId))
             {
                 return Ok();
             }
@@ -40,7 +40,7 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpDelete("{groupId}")]
-        public IActionResult RemoveUserFromGroup(int groupId, int userId)
+        public async Task<IActionResult> RemoveUserFromGroup(int groupId, int userId)
         {
             if (groupId <= 0)
             {
@@ -49,10 +49,10 @@ namespace SecretSanta.Api.Controllers
 
             if (userId <= 0)
             {
-                return BadRequest();
+                return BadRequest();    
             }
 
-            if (GroupService.RemoveUserFromGroup(groupId, userId))
+            if (await GroupService.RemoveUserFromGroup(groupId, userId))
             {
                 return Ok();
             }
