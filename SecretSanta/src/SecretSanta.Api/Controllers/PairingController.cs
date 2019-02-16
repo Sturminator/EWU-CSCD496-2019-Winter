@@ -41,4 +41,4 @@ namespace SecretSanta.Api.Controllers
             return Created($"/Pairing/{groupId}", pairings.Select(p => Mapper.Map<PairingViewModel>(p)).ToList());
         }
     }
-}
+}   
