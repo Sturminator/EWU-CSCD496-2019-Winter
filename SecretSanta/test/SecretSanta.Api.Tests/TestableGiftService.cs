@@ -10,10 +10,10 @@ namespace SecretSanta.Api.Tests
         public List<Gift> ToReturn { get; set; }
         public int GetGiftsForUser_UserId { get; set; }
 
-        public Task<List<Gift>> GetGiftsForUser(int userId)
+        public async Task<List<Gift>> GetGiftsForUser(int userId)
         {
             GetGiftsForUser_UserId = userId;
-            return Task.FromResult(ToReturn);
+            return await Task.FromResult(ToReturn);
         }
     }
 }

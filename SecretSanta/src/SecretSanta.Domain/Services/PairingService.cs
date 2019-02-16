@@ -11,7 +11,7 @@ namespace SecretSanta.Domain.Services
     {
         private ApplicationDbContext DbContext { get; }
 
-        public async Task<bool> GeneratePairingsAsync(int groupId)
+        public async Task<List<Pairing>> GeneratePairings(int groupId)
         {
             Group group = await DbContext.Groups
                 .Include(x => x.GroupUsers)
@@ -19,17 +19,17 @@ namespace SecretSanta.Domain.Services
 
             List<int> ids = group?.GroupUsers?.Select(x => x.UserId).ToList();
 
-            if (ids == null || ids.Count < 2)
+            List<Pairing> pairings = new List<Pairing>();
+
+            if (ids.Count > 1)
             {
-                return false;
+                pairings = await Task.Run(() => GetPairings(ids));
+
+                await DbContext.Pairings.AddRangeAsync(pairings);
+                await DbContext.SaveChangesAsync();
             }
 
-            List<Pairing> pairings = await Task.Run(() => GetPairings(ids));
-
-            await DbContext.Pairings.AddRangeAsync(pairings);
-            await DbContext.SaveChangesAsync();
-
-            return true;
+            return pairings;
         }
 
         private List<Pairing> GetPairings(List<int> ids)

@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using SecretSanta.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Domain.Services.Interfaces
 {
     public interface IPairingService
     {
-        Task<bool> GeneratePairingsAsync(int groupId);
+        Task<List<Pairing>> GeneratePairings(int groupId);  
     }
 }
