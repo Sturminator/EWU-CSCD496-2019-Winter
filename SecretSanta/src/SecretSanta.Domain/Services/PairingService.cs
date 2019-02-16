@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SecretSanta.Domain.Models;
 using SecretSanta.Domain.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,11 @@ namespace SecretSanta.Domain.Services
     public class PairingService : IPairingService
     {
         private ApplicationDbContext DbContext { get; }
+
+        public PairingService(ApplicationDbContext dbContext)
+        {
+            DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
 
         public async Task<List<Pairing>> GeneratePairings(int groupId)
         {
@@ -36,7 +42,7 @@ namespace SecretSanta.Domain.Services
         {
             var pairings = new List<Pairing>();
 
-            for (int i = 0; i < ids.Count; i++)
+            for (int i = 0; i < ids.Count - 1; i++)
             {
                 pairings.Add(new Pairing
                 {
