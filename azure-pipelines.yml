@@ -21,3 +21,5 @@ steps:
     command: test
     projects: 'SecretSanta/test/**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
