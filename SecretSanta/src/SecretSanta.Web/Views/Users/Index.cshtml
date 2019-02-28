@@ -5,7 +5,7 @@
         <p>@user.FirstName @user.LastName</p>
         <p>            
             <a asp-controller="Users" class="button is-primary" asp-action="Update" asp-route-userId="@user.Id">Update</a>
-            <a asp-controller="Users" class="button is-danger" asp-action="Delete" asp-route-userId="@user.Id"
+            <a asp-controller="Users" class="button is-danger" asp-action="Remove" asp-route-userId="@user.Id"
                onclick="return confirm('Continue with deleting @user.FirstName @user.LastName?')">Delete</a>
         </p>
     </div>

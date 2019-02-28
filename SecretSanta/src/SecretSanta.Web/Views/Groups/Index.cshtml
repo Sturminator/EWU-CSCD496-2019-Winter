@@ -1,0 +1,13 @@
+﻿<h1 class="heading">Users</h1>
+@foreach (var group in ViewBag.Groups)
+{
+    <div class="buttons are-small">
+        <p>@group.FirstName @group.LastName</p>
+        <p>
+            <a asp-controller="Groups" class="button is-primary" asp-action="Update" asp-route-userId="@group.Id">Update</a>
+            <a asp-controller="Groups" class="button is-danger" asp-action="Remove" asp-route-userId="@group.Id"
+               onclick="return confirm('Continue with deleting @group.FirstName @group.LastName?')">Delete</a>
+        </p>
+    </div>
+}
+<a asp-controller="Groups" asp-action="Add" class="button is-primary">Add Group</a>
