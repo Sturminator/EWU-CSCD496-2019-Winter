@@ -1,8 +1,13 @@
 ﻿<h1 class="heading">Users</h1>
-<ul>
-    @foreach (var user in ViewBag.Users)
-    {
-        <li>@user.FirstName @user.LastName</li>
-    }
-</ul>
+@foreach (var user in ViewBag.Users)
+{
+    <div class="buttons are-small">
+        <p>@user.FirstName @user.LastName</p>
+        <p>            
+            <a asp-controller="Users" class="button is-primary" asp-action="Update" asp-route-userId="@user.Id">Update</a>
+            <a asp-controller="Users" class="button is-danger" asp-action="Delete" asp-route-userId="@user.Id"
+               onclick="return confirm('Continue with deleting @user.FirstName @user.LastName?')">Delete</a>
+        </p>
+    </div>
+}
 <a asp-controller="Users" asp-action="Add" class="button is-primary">Add User</a>

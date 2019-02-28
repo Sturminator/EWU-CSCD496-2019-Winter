@@ -131,3 +131,5 @@ namespace SecretSanta.Web.Controllers
 
             return result;
         }
+    }
+}

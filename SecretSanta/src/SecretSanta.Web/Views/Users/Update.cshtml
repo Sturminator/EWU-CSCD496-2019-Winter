@@ -3,7 +3,13 @@
 {
     <div>@ViewBag.ErrorMessage</div>
 }
-    <form asp-route="Add">
+
+    <form asp-route="Update">
+        <div class="field">
+            <div class="control">
+                <input type="hidden" id="userId" value="@ViewBag.UserId" />
+            </div>
+        </div>
         <div class="field">
             <label class="label" asp-for="FirstName">First Name</label>
             <div class="control">
@@ -18,7 +24,7 @@
         </div>
         <div class="field">
             <div class="control">
-                <button class="button is-primary">Submit</button>
+                <button class="button is-info">Update</button>
             </div>
         </div>
         <div class="control">
