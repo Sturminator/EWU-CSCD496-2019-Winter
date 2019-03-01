@@ -73,7 +73,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UserViewModel viewModel)
+        public async Task<IActionResult> Update(int userId, UserViewModel viewModel)
         {
             IActionResult result = View();
 
@@ -84,7 +84,7 @@ namespace SecretSanta.Web.Controllers
                     try
                     {
                         var secretSantaClient = new SecretSantaClient(httpClient.BaseAddress.ToString(), httpClient);
-                        await secretSantaClient.UpdateUserAsync(viewModel.Id, Mapper.Map<UserInputViewModel>(viewModel));
+                        await secretSantaClient.UpdateUserAsync(userId, Mapper.Map<UserInputViewModel>(viewModel));
 
                         result = RedirectToAction(nameof(Index));
                     }

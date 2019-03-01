@@ -70,7 +70,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(GroupViewModel viewModel)
+        public async Task<IActionResult> Update(int groupId, GroupInputViewModel viewModel)
         {
             IActionResult result = View();
 
@@ -81,7 +81,7 @@ namespace SecretSanta.Web.Controllers
                     try
                     {
                         var secretSantaClient = new SecretSantaClient(httpClient.BaseAddress.ToString(), httpClient);
-                        await secretSantaClient.UpdateGroupAsync(viewModel.Id, Mapper.Map<GroupInputViewModel>(viewModel));
+                        await secretSantaClient.UpdateGroupAsync(groupId, viewModel);
 
                         result = RedirectToAction(nameof(Index));
                     }
