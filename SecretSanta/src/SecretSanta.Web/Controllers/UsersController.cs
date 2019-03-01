@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Web.ApiModels;
+using AutoMapper;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,10 +11,12 @@ namespace SecretSanta.Web.Controllers
     public class UsersController : Controller
     {
         private IHttpClientFactory ClientFactory { get; }
+        private IMapper Mapper { get; }
 
-        public UsersController(IHttpClientFactory clientFactory)
+        public UsersController(IHttpClientFactory clientFactory, IMapper mapper)
         {
             ClientFactory = clientFactory;
+            Mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -33,7 +36,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(UserInputViewModel viewModel)
+        public async Task<IActionResult> Add(UserViewModel viewModel)
         {
             IActionResult result = View();
 
@@ -44,7 +47,7 @@ namespace SecretSanta.Web.Controllers
                     try
                     {
                         var secretSantaClient = new SecretSantaClient(httpClient.BaseAddress.ToString(), httpClient);
-                        await secretSantaClient.CreateUserAsync(viewModel);
+                        await secretSantaClient.CreateUserAsync(Mapper.Map<UserInputViewModel>(viewModel));
 
                         result = RedirectToAction(nameof(Index));
                     }
@@ -70,7 +73,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UserInputViewModel viewModel, int userId)
+        public async Task<IActionResult> Update(UserViewModel viewModel)
         {
             IActionResult result = View();
 
@@ -81,7 +84,7 @@ namespace SecretSanta.Web.Controllers
                     try
                     {
                         var secretSantaClient = new SecretSantaClient(httpClient.BaseAddress.ToString(), httpClient);
-                        await secretSantaClient.UpdateUserAsync(userId, viewModel);
+                        await secretSantaClient.UpdateUserAsync(viewModel.Id, Mapper.Map<UserInputViewModel>(viewModel));
 
                         result = RedirectToAction(nameof(Index));
                     }

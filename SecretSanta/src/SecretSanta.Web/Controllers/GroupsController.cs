@@ -2,16 +2,19 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Web.ApiModels;
+using AutoMapper;
 
 namespace SecretSanta.Web.Controllers
 {
     public class GroupsController : Controller
     {
         private IHttpClientFactory ClientFactory { get; }
+        private IMapper Mapper { get; }
 
-        public GroupsController(IHttpClientFactory clientFactory)
+        public GroupsController(IHttpClientFactory clientFactory, IMapper mapper)
         {
             ClientFactory = clientFactory;
+            Mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -31,7 +34,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(GroupInputViewModel viewModel)
+        public async Task<IActionResult> Add(GroupViewModel viewModel)
         {
             IActionResult result = View();
 
@@ -42,7 +45,7 @@ namespace SecretSanta.Web.Controllers
                     try
                     {
                         var secretSantaClient = new SecretSantaClient(httpClient.BaseAddress.ToString(), httpClient);
-                        await secretSantaClient.CreateGroupAsync(viewModel);
+                        await secretSantaClient.CreateGroupAsync(Mapper.Map<GroupInputViewModel>(viewModel));
 
                         result = RedirectToAction(nameof(Index));
                     }
@@ -67,7 +70,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(GroupInputViewModel viewModel, int groupId)
+        public async Task<IActionResult> Update(GroupViewModel viewModel)
         {
             IActionResult result = View();
 
@@ -78,7 +81,7 @@ namespace SecretSanta.Web.Controllers
                     try
                     {
                         var secretSantaClient = new SecretSantaClient(httpClient.BaseAddress.ToString(), httpClient);
-                        await secretSantaClient.UpdateGroupAsync(groupId, viewModel);
+                        await secretSantaClient.UpdateGroupAsync(viewModel.Id, Mapper.Map<GroupInputViewModel>(viewModel));
 
                         result = RedirectToAction(nameof(Index));
                     }
