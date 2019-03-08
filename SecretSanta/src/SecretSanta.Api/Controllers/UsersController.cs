@@ -19,9 +19,9 @@ namespace SecretSanta.Api.Controllers
     {
         private IUserService UserService { get; }
         private IMapper Mapper { get; }
-        private ILogger Logger { get; }
+        private ILogger<UsersController> Logger { get; }
 
-        public UsersController(IUserService userService, IMapper mapper, ILogger logger)
+        public UsersController(IUserService userService, IMapper mapper, ILogger<UsersController> logger)
         {
             UserService = userService;
             Mapper = mapper;

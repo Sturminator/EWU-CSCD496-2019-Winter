@@ -19,16 +19,6 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class GroupControllerTests
     {
-        private AutoMocker Mocker { get; set; }
-        private ILogger<GiftsController> _mockLogger;
-
-        [TestInitialize]
-        public void ConfigureMockLogger()
-        {
-            Mocker = new AutoMocker();
-            _mockLogger = Mocker.CreateInstance<ILogger<GiftsController>>();
-        }
-
         [TestMethod]
         public async Task GetAllGroups_ReturnsGroups()
         {
@@ -48,8 +38,8 @@ namespace SecretSanta.Api.Tests.Controllers
                 .Returns(Task.FromResult(new List<Group> { group1, group2 }))
                 .Verifiable();
 
-
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = (await controller.GetGroups()).Result as OkObjectResult;
 
@@ -65,7 +55,9 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task CreateGroup_RequiresGroup()
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = (await controller.CreateGroup(null)).Result as BadRequestResult;
 
@@ -88,7 +80,8 @@ namespace SecretSanta.Api.Tests.Controllers
                 }))
                 .Verifiable();
 
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = (await controller.CreateGroup(group)).Result as CreatedAtActionResult;
             var resultValue = result.Value as GroupViewModel;
@@ -103,7 +96,9 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task UpdateGroup_RequiresGroup()
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
 
             var result = (await controller.UpdateGroup(1, null)) as BadRequestResult;
@@ -127,7 +122,8 @@ namespace SecretSanta.Api.Tests.Controllers
                 }))
                 .Verifiable();
 
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = (await controller.UpdateGroup(2, group)) as NoContentResult;
 
@@ -141,7 +137,9 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task DeleteGroup_RequiresPositiveId(int groupId)
         {
             var service = new Mock<IGroupService>(MockBehavior.Strict);
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = await controller.DeleteGroup(groupId);
 
@@ -155,7 +153,9 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Setup(x => x.DeleteGroup(2))
                 .Returns(Task.FromResult(false))
                 .Verifiable();
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = await controller.DeleteGroup(2);
 
@@ -170,7 +170,9 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Setup(x => x.DeleteGroup(2))
                 .Returns(Task.FromResult(true))
                 .Verifiable();
-            var controller = new GroupsController(service.Object, Mapper.Instance, _mockLogger);
+
+            var mockLogger = new Mock<ILogger<GroupsController>>();
+            var controller = new GroupsController(service.Object, Mapper.Instance, mockLogger.Object);
 
             var result = await controller.DeleteGroup(2);
 

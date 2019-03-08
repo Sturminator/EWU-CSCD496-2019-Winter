@@ -20,9 +20,9 @@ namespace SecretSanta.Api.Controllers
     {
         private IGroupService GroupService { get; }
         private IMapper Mapper { get; }
-        private ILogger Logger { get; }
+        private ILogger<GroupsController> Logger { get; }
 
-        public GroupsController(IGroupService groupService, IMapper mapper, ILogger logger)
+        public GroupsController(IGroupService groupService, IMapper mapper, ILogger<GroupsController> logger)
         {
             GroupService = groupService;
             Mapper = mapper;

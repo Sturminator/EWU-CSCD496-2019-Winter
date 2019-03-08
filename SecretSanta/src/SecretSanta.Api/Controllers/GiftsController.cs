@@ -19,9 +19,9 @@ namespace SecretSanta.Api.Controllers
     {
         private IGiftService GiftService { get; }
         private IMapper Mapper { get; }
-        private ILogger Logger { get; }
+        private ILogger<GiftsController> Logger { get; }
 
-        public GiftsController(IGiftService giftService, IMapper mapper, ILogger logger)
+        public GiftsController(IGiftService giftService, IMapper mapper, ILogger<GiftsController> logger)
         {
             GiftService = giftService;
             Mapper = mapper;

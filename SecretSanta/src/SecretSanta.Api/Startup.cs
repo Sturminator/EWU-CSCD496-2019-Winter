@@ -22,10 +22,9 @@ using SecretSanta.Domain.Services.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
 
 [assembly: ApiConventionType(typeof(DefaultApiConventions))]
-[assembly: CLSCompliant(false)]
 namespace SecretSanta.Api
 {
-    public class Startup    
+    public class Startup
     {
         private IConfiguration Configuration { get; }
 
