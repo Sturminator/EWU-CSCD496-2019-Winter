@@ -59,7 +59,7 @@ namespace SecretSanta.Web.UITests
             string lastName = "Last Name" + Guid.NewGuid().ToString("N");
             string fullName = firstName + " " + lastName;
 
-            CreateUser(RootUrl, firstName, lastName);
+            CreateUser(firstName, lastName);
 
             IWebElement editLink = usersPage.GetEditLink(fullName);
             var editPage = new EditUserPage(Driver);
@@ -77,10 +77,10 @@ namespace SecretSanta.Web.UITests
             string lastName = "Last Name" + Guid.NewGuid().ToString("N");
             string fullName = firstName + " " + lastName;
 
-            UsersPage up = CreateUser(RootUrl, firstName, lastName);
+            UsersPage usersPage = CreateUser(firstName, lastName);
 
             Assert.IsTrue(Driver.Url.EndsWith(UsersPage.Slug));
-            List<string> users = up.UserList;
+            List<string> users = usersPage.UserList;
             Assert.IsTrue(users.Contains(fullName));
         }
 
@@ -91,24 +91,24 @@ namespace SecretSanta.Web.UITests
             string lastName = "Last Name" + Guid.NewGuid().ToString("N");
             string fullName = firstName + " " + lastName;
 
-            UsersPage up = CreateUser(RootUrl, firstName, lastName);
+            UsersPage usersPage = CreateUser(firstName, lastName);
 
-            up.GetEditLink(fullName).Click();
+            usersPage.GetEditLink(fullName).Click();
 
-            EditUserPage eup = new EditUserPage(Driver);
+            EditUserPage editUserPage = new EditUserPage(Driver);
 
-            eup.FirstNameTextBox.Clear();
-            eup.LastNameTextBox.Clear();
+            editUserPage.FirstNameTextBox.Clear();
+            editUserPage.LastNameTextBox.Clear();
 
             string firstNameEdit = "First Name" + Guid.NewGuid().ToString("N");
             string lastNameEdit = "Last Name" + Guid.NewGuid().ToString("N");
             string fullNameEdit = firstNameEdit + " " + lastNameEdit;
 
-            eup.FirstNameTextBox.SendKeys(firstNameEdit);
-            eup.LastNameTextBox.SendKeys(lastNameEdit);
-            eup.SubmitButton.Click();
+            editUserPage.FirstNameTextBox.SendKeys(firstNameEdit);
+            editUserPage.LastNameTextBox.SendKeys(lastNameEdit);
+            editUserPage.SubmitButton.Click();
 
-            List<string> users = up.UserList as List<string>;
+            List<string> users = usersPage.UserList as List<string>;
             Assert.IsTrue(users.Contains(fullNameEdit));
             Assert.IsFalse(users.Contains(fullName));
         }
@@ -120,19 +120,36 @@ namespace SecretSanta.Web.UITests
             string lastName = "Last Name" + Guid.NewGuid().ToString("N");
             string fullName = firstName + " " + lastName;
 
-            UsersPage up = CreateUser(RootUrl, firstName, lastName);
+            UsersPage usersPage = CreateUser(firstName, lastName);
 
-            IWebElement deleteLink = up.GetDeleteLink(fullName);
+            IWebElement deleteLink = usersPage.GetDeleteLink(fullName);
             deleteLink.Click();
 
             Driver.SwitchTo().Alert().Accept(); // handle alert      
-            List<string> groupNames = up.UserList;
+            List<string> groupNames = usersPage.UserList;
             Assert.IsFalse(groupNames.Contains(fullName));
         }
 
-        private UsersPage CreateUser(string rootUrl, string firstName, string lastName)
+        [TestMethod]
+        public void CanCancelDeleteUser()
         {
-            Driver.Navigate().GoToUrl(new Uri(new Uri(rootUrl), UsersPage.Slug));
+            string firstName = "First Name" + Guid.NewGuid().ToString("N");
+            string lastName = "Last Name" + Guid.NewGuid().ToString("N");
+            string fullName = firstName + " " + lastName;
+
+            UsersPage usersPage = CreateUser(firstName, lastName);
+
+            IWebElement deleteLink = usersPage.GetDeleteLink(fullName);
+            deleteLink.Click();
+
+            Driver.SwitchTo().Alert().Dismiss(); // handle alert      
+            List<string> groupNames = usersPage.UserList;
+            Assert.IsTrue(groupNames.Contains(fullName));
+        }
+
+        private UsersPage CreateUser(string firstName, string lastName)
+        {
+            Driver.Navigate().GoToUrl(new Uri(new Uri(RootUrl), UsersPage.Slug));
             var page = new UsersPage(Driver);
             page.AddUserLink.Click();
 
